@@ -56,3 +56,26 @@ def read_conf():
                 continue
     file.close 
     return scan_interval, p_range_first, p_range_last, host_ip, ports_opened
+
+#Perform sock.connect to see if host respond at given port
+def scan():
+    
+    scan_interval, p_range_first, p_range_last, host_ip, ports_opened = read_conf()
+    sock = socket.socket()
+    
+    for ip in host_ip:
+        temp = []
+        for p in range(int(p_range_first),int(p_range_last)):
+            try:
+                
+                sock.connect((ip,p))
+                sock.close
+                temp.append(p)
+            except:
+                pass
+        for el in ports_opened[host_ip.index(ip)]:
+            if el in temp:
+                temp.remove(el)
+        if temp:
+            warning(temp,ip)
+        temp = []
