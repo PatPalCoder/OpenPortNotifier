@@ -28,8 +28,29 @@ def warning(ports,host):
         timeout=10, 
     )
 
+#Configure config.txt using simple dialog
 def setup_conf():
-    pass
+    
+    ip_list = []
+    port_list = []
+    t = simpledialog.askstring("Config helper", "Set scan time spacing [s]:")
+    r = simpledialog.askstring("Config helper", "Set nubmer of first and last port to scan [separate by space]:")
+    if t == None:
+        return 0
+    i = int(simpledialog.askstring("Config helper", "How many hosts do you want to scan:"))
+    for x in range(i):
+        ip_list.append(simpledialog.askstring("Config helper", f'Enter ip address of the host nr {x+1}:'))
+        port_list.append(simpledialog.askstring("Config helper", f'Enter the port numbers that should remain open [separated by space button]:'))
+    
+    
+    with open(config, 'w') as file:
+        file.write('#This is configuration file, use the following structure:\n#[scan interval in seconds]\n#port-range [first port number] [last port number]\n')
+        file.write('#Host[id] [ip address] [ports allowed]  e.g.\n#\n#90\n#port-range 1 1024\n#Host0 192.168.1.1 22 443\n#\n')
+        file.write(f'{t}\n')
+        file.write(f'port-range {r}\n')
+        for x in range(i):
+            file.write(f'Host{x} {ip_list[x]} {''.join(map(str, port_list[x]))}\n')
+    file.close
     
 def read_conf():
     
@@ -104,3 +125,8 @@ def scan():
         temp = []
         
     root.after(1000*int(scan_interval), scan)
+    
+if __name__ == "__main__":
+    menu()
+
+# Made by Patryk Kocioł @PatPalCoder
