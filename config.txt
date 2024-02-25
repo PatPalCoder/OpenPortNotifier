@@ -1,0 +1,10 @@
+#This is configuration file, use the following structure:
+#[scan interval in seconds]
+#port-range [first port number] [last port number]
+#Host[id] [ip address] [ports allowed]  e.g.
+#
+#90
+#port-range 1 1024
+#Host0 192.168.1.1 22 443
+#
+
