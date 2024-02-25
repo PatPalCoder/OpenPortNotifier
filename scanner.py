@@ -27,6 +27,9 @@ def warning(ports,host):
         app_icon=icon ,  
         timeout=10, 
     )
+
+def setup_conf():
+    pass
     
 def read_conf():
     
@@ -57,6 +60,26 @@ def read_conf():
     file.close 
     return scan_interval, p_range_first, p_range_last, host_ip, ports_opened
 
+def menu():
+    
+    global root
+    root = tk.Tk()
+    root.title("ACTIVE OPEN PORT SCANNER")
+
+    label1 = tk.Label(root, text="PATRYK KOCIOL'S PORT SCANNER", font=("Arial", 16))
+    label1.pack(pady=10)
+    label2 = tk.Label(root, text="Make sure you are connected and have the right to scan the specified hosts", font=("Arial", 12))
+    label2.pack(pady=5)
+    label3 = tk.Label(root, text="Configuration can be also done inside config.txt file", font=("Arial", 12))
+    label3.pack(pady=5)
+
+    button1 = tk.Button(root, text="Setup configuration", command=setup_conf)
+    button1.pack(pady=10)
+    button2 = tk.Button(root, text="Start scanning", command=scan)
+    button2.pack(pady=10)
+
+    root.mainloop()
+
 #Perform sock.connect to see if host respond at given port
 def scan():
     
@@ -79,3 +102,5 @@ def scan():
         if temp:
             warning(temp,ip)
         temp = []
+        
+    root.after(1000*int(scan_interval), scan)
